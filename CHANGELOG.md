@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.8.1
+
+- **Fix (macOS)**: `⌘C` / `⌘V` / `⌘X` / `⌘A` / `⌘Z` now work inside Glimpse windows. Previously the WKWebView had no Edit menu wired up, so AppKit beeped and the clipboard shortcuts did nothing — breaking copy/paste in textareas, inputs, and Monaco editors (e.g. inside [pi-diff-review](https://github.com/badlogic/pi-diff-review)). Now installs a standard Edit menu (Undo/Redo/Cut/Copy/Paste/Select All) AND adds a `performKeyEquivalent` fallback on `GlimpsePanel` for frameless / `.accessory` modes where the menu bar doesn't route key equivalents. Closes [#18](https://github.com/HazAT/glimpse/issues/18). Credit [@stefanwagnerdev](https://github.com/stefanwagnerdev) for the fallback approach.
+
 ## 0.8.0
 
 - **Breaking**: The pi companion extension is no longer auto-registered. It's moved to `examples/companion/` — add it manually to your pi extensions config if you want it.
