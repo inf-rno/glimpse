@@ -564,6 +564,16 @@ fn handle_message(
             window.set_visible(true);
             window.present();
         }
+        InboundMsg::Resize { width, height } => {
+            window.set_default_size(width.max(1), height.max(1));
+        }
+        InboundMsg::Move { dx, dy } => {
+            let (left, top) = current_global_position(window);
+            place_window_at_global_position(window, display, (left + dx, top + dy));
+        }
+        InboundMsg::Position { x, y } => {
+            place_window_at_global_position(window, display, (x, y));
+        }
         InboundMsg::Close => {
             io::emit(&OutboundMsg::Closed);
             std::process::exit(0);

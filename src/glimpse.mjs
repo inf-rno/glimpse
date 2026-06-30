@@ -166,6 +166,18 @@ class GlimpseWindow extends EventEmitter {
     this.#write({ type: 'file', path });
   }
 
+  resize(width, height) {
+    this.#write({ type: 'resize', width, height });
+  }
+
+  moveBy(dx, dy) {
+    this.#write({ type: 'move', dx, dy });
+  }
+
+  setPosition(x, y) {
+    this.#write({ type: 'position', x, y });
+  }
+
   get info() {
     return this.#info;
   }
@@ -255,10 +267,6 @@ export function open(html, options = {}) {
 class GlimpseStatusItem extends GlimpseWindow {
   setTitle(title) {
     this._write({ type: 'title', title });
-  }
-
-  resize(width, height) {
-    this._write({ type: 'resize', width, height });
   }
 }
 

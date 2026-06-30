@@ -53,7 +53,12 @@ try {
   await waitFor(win, 'ready');
   pass('ready event received');
 
-  // Step 3: Programmatically click the button via eval
+  // Step 3: Exercise window geometry helpers, then programmatically click the button via eval
+  win.resize(420, 320);
+  win.moveBy(4, 4);
+  win.setPosition(120, 120);
+  pass('Sent resize/move/position');
+
   win.send(`document.getElementById('btn').click()`);
   pass('Sent eval: btn.click()');
 

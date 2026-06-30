@@ -241,6 +241,18 @@ function xWindowMove(wid, x, y) {
   } catch {}
 }
 
+function xWindowGeometry(wid) {
+  try {
+    const out = execFileSync('xdotool', ['getwindowgeometry', '--shell', wid], {
+      encoding: 'utf8', timeout: 1000,
+    });
+    const x = parseInt((out.match(/X=(-?\d+)/) || [])[1]);
+    const y = parseInt((out.match(/Y=(-?\d+)/) || [])[1]);
+    if (Number.isFinite(x) && Number.isFinite(y)) return { x, y };
+  } catch {}
+  return null;
+}
+
 function xWindowActivate(wid) {
   try {
     execFileSync('xdotool', ['windowactivate', '--sync', wid], { timeout: 2000 });
@@ -1019,6 +1031,37 @@ async function main() {
           await cdp.send('Runtime.evaluate', {
             expression: `document.title = ${JSON.stringify(msg.title || '')}`,
           }, sessionId);
+        }
+        break;
+      }
+
+      case 'move': {
+        const dx = Number(msg.dx) || 0;
+        const dy = Number(msg.dy) || 0;
+        if (windowId != null) {
+          const boundsResp = await cdp.send('Browser.getWindowBounds', { windowId });
+          const bounds = boundsResp.result?.bounds || boundsResp.bounds || {};
+          const left = Number(bounds.left) || 0;
+          const top = Number(bounds.top) || 0;
+          await cdp.send('Browser.setWindowBounds', {
+            windowId, bounds: { left: Math.round(left + dx), top: Math.round(top + dy) },
+          });
+        } else if (xWindowId != null) {
+          const geometry = xWindowGeometry(xWindowId);
+          if (geometry) xWindowMove(xWindowId, geometry.x + dx, geometry.y + dy);
+        }
+        break;
+      }
+
+      case 'position': {
+        const x = Number(msg.x) || 0;
+        const y = Number(msg.y) || 0;
+        if (windowId != null) {
+          await cdp.send('Browser.setWindowBounds', {
+            windowId, bounds: { left: Math.round(x), top: Math.round(y) },
+          });
+        } else if (xWindowId != null) {
+          xWindowMove(xWindowId, x, y);
         }
         break;
       }

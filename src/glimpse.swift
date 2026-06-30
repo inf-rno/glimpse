@@ -727,6 +727,23 @@ class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, WKScri
                 return
             }
             webView.evaluateJavaScript(js, completionHandler: nil)
+        case "move":
+            guard !config.statusItem else {
+                log("move not supported in status-item mode")
+                return
+            }
+            let dx = json["dx"] as? Double ?? 0
+            let dy = json["dy"] as? Double ?? 0
+            let origin = window.frame.origin
+            window.setFrameOrigin(NSPoint(x: origin.x + CGFloat(dx), y: origin.y - CGFloat(dy)))
+        case "position":
+            guard !config.statusItem else {
+                log("position not supported in status-item mode")
+                return
+            }
+            let x = json["x"] as? Double ?? Double(window.frame.origin.x)
+            let y = json["y"] as? Double ?? Double(window.frame.origin.y)
+            window.setFrameOrigin(NSPoint(x: CGFloat(x), y: CGFloat(y)))
         case "follow-cursor":
             guard !config.statusItem else {
                 log("follow-cursor not supported in status-item mode")

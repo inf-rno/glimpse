@@ -268,6 +268,24 @@ sealed class GlimpseHost : IDisposable
                     _webView.Focus();
                 }
                 break;
+            case "resize":
+                var width = json.TryGetProperty("width", out var widthNode) ? widthNode.GetInt32() : Form.ClientSize.Width;
+                var height = json.TryGetProperty("height", out var heightNode) ? heightNode.GetInt32() : Form.ClientSize.Height;
+                Form.ClientSize = new Size(Math.Max(1, width), Math.Max(1, height));
+                break;
+            case "move":
+                var dx = json.TryGetProperty("dx", out var dxNode) ? dxNode.GetDouble() : 0;
+                var dy = json.TryGetProperty("dy", out var dyNode) ? dyNode.GetDouble() : 0;
+                Form.Location = new Point(
+                    Form.Left + (int)Math.Round(dx),
+                    Form.Top + (int)Math.Round(dy)
+                );
+                break;
+            case "position":
+                var x = json.TryGetProperty("x", out var xNode) ? xNode.GetDouble() : Form.Left;
+                var y = json.TryGetProperty("y", out var yNode) ? yNode.GetDouble() : Form.Top;
+                Form.Location = new Point((int)Math.Round(x), (int)Math.Round(y));
+                break;
             case "close":
                 CloseOnce();
                 break;

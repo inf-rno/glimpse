@@ -331,6 +331,12 @@ const isDark = win.info.appearance.darkMode;
 
 **`win.loadFile(path)`** — Load a local HTML file by absolute path.
 
+**`win.resize(width, height)`** — Resize the window or status-item popover.
+
+**`win.moveBy(dx, dy)`** — Move the window by a relative pixel delta. Useful for custom frameless drag handles.
+
+**`win.setPosition(x, y)`** — Move the window to an absolute screen position.
+
 **`win.show(options?)`** — Reveal a hidden window. Optional `options.title` sets the window title.
 ```js
 win.show();
@@ -394,14 +400,24 @@ Glimpse uses a newline-delimited JSON (JSON Lines) protocol over stdin/stdout. E
 {"type":"show","title":"Results"}
 ```
 
+**Resize** — Resize the window or status-item popover.
+```json
+{"type":"resize","width":480,"height":320}
+```
+
+**Move** — Move the window by a relative pixel delta. Positive `dy` moves down.
+```json
+{"type":"move","dx":12,"dy":-4}
+```
+
+**Position** — Move the window to an absolute screen position.
+```json
+{"type":"position","x":100,"y":200}
+```
+
 **Title** — Update menu bar text (status item mode only).
 ```json
 {"type":"title","title":"🔴"}
-```
-
-**Resize** — Change popover dimensions (status item mode only).
-```json
-{"type":"resize","width":400,"height":300}
 ```
 
 **Close** — Close the window and exit.

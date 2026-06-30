@@ -9,6 +9,9 @@ pub enum InboundMsg {
     Eval { js: String },
     File { path: String },
     Show { title: Option<String> },
+    Resize { width: i32, height: i32 },
+    Move { dx: f64, dy: f64 },
+    Position { x: f64, y: f64 },
     Close,
     GetInfo,
     FollowCursor {

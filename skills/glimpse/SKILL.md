@@ -55,6 +55,9 @@ win.on('info', info => {});          // fresh system info (after getInfo())
 win.on('closed', () => {});          // window gone
 win.send('document.title = "Hi"');   // eval JS in webview
 win.setHTML('<h1>New content</h1>'); // replace HTML
+win.resize(480, 320);                // resize window or status popover
+win.moveBy(12, -4);                  // move by relative pixels
+win.setPosition(100, 200);           // move to absolute screen position
 win.info;                            // last-known system info
 win.getInfo();                       // request fresh info
 win.close();                         // close window
@@ -475,6 +478,30 @@ Things you can build with Glimpse that you might not have considered (use `win.i
 - **Fullscreen overlay** — Use `win.info.screen` for exact dimensions, `frameless + transparent`
 - **Adaptive theming** — Read `win.info.appearance.darkMode` and style to match the OS
 - **Multi-monitor aware** — Use `win.info.screens` to position windows on specific displays
+
+---
+
+## Frameless Drag / Resize Pattern
+
+For frameless utility panels, keep drag and resize logic in your HTML and forward
+structured messages to Node, then call `win.moveBy()` / `win.resize()` from the
+`message` handler. Avoid sending arbitrary JS for window movement.
+
+```js
+const win = open(html, { frameless: true, transparent: true, floating: true });
+win.on('message', (msg) => {
+  if (msg?.type === 'move-window') win.moveBy(msg.dx, msg.dy);
+  if (msg?.type === 'resize-window') win.resize(msg.width, msg.height);
+});
+```
+
+In the page:
+```js
+handle.addEventListener('mousemove', e => {
+  if (!dragging) return;
+  window.glimpse.send({ type: 'move-window', dx: e.movementX, dy: e.movementY });
+});
+```
 
 ---
 
