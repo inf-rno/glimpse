@@ -70,6 +70,7 @@ Glimpse supports several window style flags that can be combined freely:
 | `transparent` | Clear window background — HTML body needs `background: transparent` |
 | `clickThrough` | Window ignores all mouse events |
 | `noDock` | No dock icon (macOS) — window works normally but the app doesn't appear in the dock or app switcher |
+| `allSpaces` | Show the window on all macOS Spaces/desktops |
 
 Common combinations:
 
@@ -204,6 +205,7 @@ const win = open('<html>...</html>', {
 | `hidden` | boolean | `false` | Start hidden (prewarm mode) — load HTML in the background, reveal with `win.show()` |
 | `autoClose` | boolean | `false` | Close automatically after the first `message` event |
 | `noDock` | boolean | `false` | No dock icon or app switcher entry (macOS) — window still receives focus and keyboard input |
+| `allSpaces` | boolean | `false` | Show the window on all macOS Spaces/desktops |
 
 ### `statusItem(html, options?)` — macOS only
 
@@ -495,6 +497,7 @@ npx glimpseui page.html --frameless --transparent
 | `--hidden` | off | Start hidden (prewarm) |
 | `--auto-close` | off | Exit after first message |
 | `--no-dock` | off | No dock icon (macOS) |
+| `--all-spaces` | off | Show the window on all macOS Spaces/desktops |
 
 **Shell example:**
 ```bash

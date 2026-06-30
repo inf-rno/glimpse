@@ -232,6 +232,7 @@ export function open(html, options = {}) {
   if (options.transparent)  args.push('--transparent');
   if (options.clickThrough) args.push('--click-through');
   if (options.noDock)       args.push('--no-dock');
+  if (options.allSpaces)    args.push('--all-spaces');
   if (options.hidden)       args.push('--hidden');
   if (options.autoClose)    args.push('--auto-close');
 

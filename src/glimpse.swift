@@ -139,6 +139,7 @@ struct Config {
     var openLinksApp: String? = nil
     var statusItem: Bool = false
     var noDock: Bool = false
+    var allSpaces: Bool = false
 }
 
 func parseArgs() -> Config {
@@ -200,6 +201,8 @@ func parseArgs() -> Config {
             config.statusItem = true
         case "--no-dock":
             config.noDock = true
+        case "--all-spaces":
+            config.allSpaces = true
         default:
             break
         }
@@ -448,6 +451,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, WKScri
         }
         if config.floating || config.followCursor {
             window.level = .floating
+        }
+        if config.allSpaces {
+            window.collectionBehavior.insert([.canJoinAllSpaces, .fullScreenAuxiliary, .stationary])
         }
         if config.clickThrough {
             window.ignoresMouseEvents = true

@@ -80,6 +80,7 @@ win.close();                         // close window
   openLinksApp: '/Applications/Google Chrome.app', // optional app bundle path
   autoClose: true,        // close after first message
   noDock: true,           // no dock icon or app switcher entry (macOS)
+  allSpaces: true,        // show on all macOS Spaces/desktops
   x, y,                   // exact screen position
   timeout,                // for prompt() only — ms before rejecting
 }
